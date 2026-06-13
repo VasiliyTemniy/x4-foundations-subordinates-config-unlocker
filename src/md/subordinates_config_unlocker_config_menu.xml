@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="VAS_SubordinatesConfigUnlocker_Config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <!--
+    Config state + Extension Options UI for Subordinates Config Unlocker. The
+    gameplay lives in aiscripts/Lua; they read the player.entity.$vas_scu_*
+    mirrors, which are re-pushed from ModConfig on every load by InitDefaults.
+  -->
+  <cues>
+    <!-- Config STATE container. Defaults live in exactly one place: SeedDefaults. -->
+    <cue name="ModConfig" namespace="this">
+      <actions>
+        <run_actions ref="SeedDefaults"/>
+      </actions>
+    </cue>
+
+    <!--@doc
+        Idempotent defaults seeder. String-coercion null checks: explicit
+        false/0 must NOT be re-seeded. -->
+    <library name="SeedDefaults" purpose="run_actions">
+      <actions>
+        <set_value name="$defaults" exact="table[
+          $debugEnabled = false,
+          $unlockTraders = true,
+          $unlockBuildStorageTraders = true,
+          $unlockMiners = true,
+        ]"/>
+        <do_for_each name="$key" in="$defaults.keys.list">
+          <do_if value="(@md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.{$key} + '') == 'null'">
+            <set_value name="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.{$key}" exact="$defaults.{$key}"/>
+          </do_if>
+        </do_for_each>
+      </actions>
+    </library>
+
+    <!-- event_universe_generated fires both at new-game start AND on every
+         savegame load (md.xsd), so it alone covers all sessions. Seeds defaults
+         and re-pushes all blackboard mirrors. -->
+    <cue name="InitDefaults" instantiate="true">
+      <conditions>
+        <event_universe_generated/>
+      </conditions>
+      <actions>
+        <run_actions ref="SeedDefaults"/>
+        <set_value name="player.entity.$vas_scu_debug_chance" exact="if md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$debugEnabled then 100 else 0"/>
+        <set_value name="player.entity.$vas_scu_unlock_traders" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockTraders"/>
+        <set_value name="player.entity.$vas_scu_unlock_build_storage_traders" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockBuildStorageTraders"/>
+        <set_value name="player.entity.$vas_scu_unlock_miners" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockMiners"/>
+      </actions>
+    </cue>
+
+    <cue name="StartSMO" instantiate="true">
+      <conditions>
+        <event_cue_signalled cue="md.Simple_Menu_Options.Reloaded"/>
+      </conditions>
+      <actions>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Register_Options_Menu" param="table[
+          $id = 'vas_scu_options_menu',
+          $columns = 2,
+          $title = {202606060,1},
+          $onOpen = BuildOptionsMenu,
+        ]"/>
+        <cancel_cue cue="this"/>
+      </actions>
+    </cue>
+
+    <cue name="BuildOptionsMenu" instantiate="true">
+      <conditions>
+        <event_cue_signalled/>
+      </conditions>
+      <actions>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Call_Table_Method" param="table[
+          $method = 'setColWidth',
+          $col = 1,
+          $width = 'Helper.standardButtonHeight',
+        ]"/>
+
+        <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_CheckBox" param="table[
+          $id = 'debugEnabled',
+          $checked = @md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$debugEnabled,
+          $col = 1,
+          $width = 'Helper.standardButtonHeight',
+          $height = 'Helper.standardButtonHeight',
+          $onClick = OnOptionsCheckboxChanged,
+        ]"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[
+          $col = 2,
+          $text = {202606060,2},
+        ]"/>
+
+        <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_CheckBox" param="table[
+          $id = 'unlockTraders',
+          $checked = @md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockTraders,
+          $col = 1,
+          $width = 'Helper.standardButtonHeight',
+          $height = 'Helper.standardButtonHeight',
+          $onClick = OnOptionsCheckboxChanged,
+        ]"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[
+          $col = 2,
+          $text = {202606060,3},
+        ]"/>
+
+        <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_CheckBox" param="table[
+          $id = 'unlockBuildStorageTraders',
+          $checked = @md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockBuildStorageTraders,
+          $col = 1,
+          $width = 'Helper.standardButtonHeight',
+          $height = 'Helper.standardButtonHeight',
+          $onClick = OnOptionsCheckboxChanged,
+        ]"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[
+          $col = 2,
+          $text = {202606060,4},
+        ]"/>
+
+        <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_CheckBox" param="table[
+          $id = 'unlockMiners',
+          $checked = @md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockMiners,
+          $col = 1,
+          $width = 'Helper.standardButtonHeight',
+          $height = 'Helper.standardButtonHeight',
+          $onClick = OnOptionsCheckboxChanged,
+        ]"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[
+          $col = 2,
+          $text = {202606060,5},
+        ]"/>
+      </actions>
+    </cue>
+
+    <cue name="OnOptionsCheckboxChanged" instantiate="true">
+      <conditions>
+        <event_cue_signalled/>
+      </conditions>
+      <actions>
+        <set_value name="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.{'$' + event.param.$id}" exact="event.param.$checked"/>
+        <do_if value="event.param.$id == 'debugEnabled'">
+          <do_if value="event.param.$checked">
+            <set_value name="player.entity.$vas_scu_debug_chance" exact="100"/>
+          </do_if>
+          <do_else>
+            <set_value name="player.entity.$vas_scu_debug_chance" exact="0"/>
+          </do_else>
+        </do_if>
+        <set_value name="player.entity.$vas_scu_unlock_traders" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockTraders"/>
+        <set_value name="player.entity.$vas_scu_unlock_build_storage_traders" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockBuildStorageTraders"/>
+        <set_value name="player.entity.$vas_scu_unlock_miners" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockMiners"/>
+        <cancel_cue cue="this"/>
+      </actions>
+    </cue>
+  </cues>
+</mdscript>

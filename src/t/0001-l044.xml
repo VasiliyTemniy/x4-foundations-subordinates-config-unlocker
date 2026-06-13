@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff><add sel="/language">
+  <page id="202606060" title="[VAS] Subordinates Config Unlocker" descr="0" voice="no">
+    <t id="1">Subordinates Config Unlocker</t>
+    <t id="2">Debug logging</t>
+    <t id="3">Unlock trader subordinate distances</t>
+    <t id="4">Unlock build-storage trader distances</t>
+    <t id="5">Unlock miner subordinate distances</t>
+  </page>
+</add></diff>

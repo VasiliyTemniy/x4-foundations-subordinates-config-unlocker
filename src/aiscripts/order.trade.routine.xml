@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <replace sel="/aiscript/init/do_if[@value='this.isplayerowned']/do_else">
+    <do_else>
+      <!-- VAS-SCU: keep player-edited station/build-storage subordinate trade ranges.
+           Ware basket overrides already have a vanilla switch in the default behaviour UI;
+           this mod currently only handles gate distances. -->
+      <do_if value="not (((this.assignedcontrolled.assignment == assignment.trade) and @player.entity.$vas_scu_unlock_traders) or ((this.assignedcontrolled.assignment == assignment.tradeforbuildstorage) and @player.entity.$vas_scu_unlock_build_storage_traders))">
+        <do_if value="$maxbuy != $maxrange">
+          <set_value name="$maxbuy" exact="$maxrange"/>
+          <do_if value="@$thisorder.exists">
+            <edit_order_param order="$thisorder" param="'maxbuy'" value="$maxbuy"/>
+          </do_if>
+        </do_if>
+        <do_if value="$maxsell != $maxrange">
+          <set_value name="$maxsell" exact="$maxrange"/>
+          <do_if value="@$thisorder.exists">
+            <edit_order_param order="$thisorder" param="'maxsell'" value="$maxsell"/>
+          </do_if>
+        </do_if>
+      </do_if>
+    </do_else>
+  </replace>
+</diff>
