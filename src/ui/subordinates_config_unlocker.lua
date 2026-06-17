@@ -18,6 +18,7 @@ local DISTANCE_PARAMS = {
     maxbuy = true,
     minsell = true,
     maxsell = true,
+    range = true,
 }
 
 local TRADE_ORDERS = {
@@ -31,6 +32,14 @@ local MINING_ORDERS = {
     MiningRoutine_Basic = true,
     MiningRoutine_Advanced = true,
     MiningRoutine_Expert = true,
+}
+
+local PROSPECT_ORDERS = {
+    Prospect = true,
+}
+
+local SALVAGE_ORDERS = {
+    SalvageRoutine = true,
 }
 
 local function playerID()
@@ -109,6 +118,10 @@ local function isEnabledForAssignment(assignment)
         return configFlag("$vas_scu_unlock_build_storage_traders", true)
     elseif assignment == "mining" then
         return configFlag("$vas_scu_unlock_miners", true)
+    elseif assignment == "prospect" then
+        return configFlag("$vas_scu_unlock_prospectors", true)
+    elseif assignment == "salvage" then
+        return configFlag("$vas_scu_unlock_salvagers", true)
     end
     return false
 end
@@ -139,6 +152,10 @@ local function isUnlockableDistanceParam(orderidx, order, paramidx, param, insta
     local orderID = getOrderDefID(order) or getOrderDefID(infoTableData.defaultorder)
     if assignment == "mining" then
         return MINING_ORDERS[orderID] == true
+    elseif assignment == "prospect" then
+        return PROSPECT_ORDERS[orderID] == true
+    elseif assignment == "salvage" then
+        return SALVAGE_ORDERS[orderID] == true
     end
     return TRADE_ORDERS[orderID] == true
 end

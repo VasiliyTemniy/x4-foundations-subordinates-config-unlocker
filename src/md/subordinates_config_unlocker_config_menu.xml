@@ -23,6 +23,8 @@
           $unlockTraders = true,
           $unlockBuildStorageTraders = true,
           $unlockMiners = true,
+          $unlockProspectors = true,
+          $unlockSalvagers = true,
         ]"/>
         <do_for_each name="$key" in="$defaults.keys.list">
           <do_if value="(@md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.{$key} + '') == 'null'">
@@ -45,6 +47,8 @@
         <set_value name="player.entity.$vas_scu_unlock_traders" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockTraders"/>
         <set_value name="player.entity.$vas_scu_unlock_build_storage_traders" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockBuildStorageTraders"/>
         <set_value name="player.entity.$vas_scu_unlock_miners" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockMiners"/>
+        <set_value name="player.entity.$vas_scu_unlock_prospectors" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockProspectors"/>
+        <set_value name="player.entity.$vas_scu_unlock_salvagers" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockSalvagers"/>
       </actions>
     </cue>
 
@@ -129,6 +133,34 @@
           $col = 2,
           $text = {202606060,5},
         ]"/>
+
+        <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_CheckBox" param="table[
+          $id = 'unlockProspectors',
+          $checked = @md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockProspectors,
+          $col = 1,
+          $width = 'Helper.standardButtonHeight',
+          $height = 'Helper.standardButtonHeight',
+          $onClick = OnOptionsCheckboxChanged,
+        ]"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[
+          $col = 2,
+          $text = {202606060,6},
+        ]"/>
+
+        <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_CheckBox" param="table[
+          $id = 'unlockSalvagers',
+          $checked = @md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockSalvagers,
+          $col = 1,
+          $width = 'Helper.standardButtonHeight',
+          $height = 'Helper.standardButtonHeight',
+          $onClick = OnOptionsCheckboxChanged,
+        ]"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[
+          $col = 2,
+          $text = {202606060,7},
+        ]"/>
       </actions>
     </cue>
 
@@ -149,6 +181,8 @@
         <set_value name="player.entity.$vas_scu_unlock_traders" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockTraders"/>
         <set_value name="player.entity.$vas_scu_unlock_build_storage_traders" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockBuildStorageTraders"/>
         <set_value name="player.entity.$vas_scu_unlock_miners" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockMiners"/>
+        <set_value name="player.entity.$vas_scu_unlock_prospectors" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockProspectors"/>
+        <set_value name="player.entity.$vas_scu_unlock_salvagers" exact="md.VAS_SubordinatesConfigUnlocker_Config.ModConfig.$unlockSalvagers"/>
         <cancel_cue cue="this"/>
       </actions>
     </cue>

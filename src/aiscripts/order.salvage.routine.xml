@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <replace sel="/aiscript/init/do_if[@value='this.isplayerowned']/do_if[@value='@this.assignedcontrolled.commander.isclass.station']">
+    <do_if value="@this.assignedcontrolled.commander.isclass.station">
+      <!-- VAS-SCU: keep player-edited station subordinate salvage range. -->
+      <do_if value="not @player.entity.$vas_scu_unlock_salvagers">
+        <do_if value="$range != $maxrange">
+          <set_value name="$range" exact="$maxrange"/>
+          <do_if value="@$thisorder.exists">
+            <edit_order_param order="$thisorder" param="'range'" value="$range"/>
+          </do_if>
+        </do_if>
+      </do_if>
+    </do_if>
+  </replace>
+  <replace sel="/aiscript/patch[@sinceversion='7']/do_if[@value='this.isplayerowned']/do_if[@value='@this.assignedcontrolled.commander.isclass.station']">
+    <do_if value="@this.assignedcontrolled.commander.isclass.station">
+      <!-- VAS-SCU: keep player-edited station subordinate salvage range. -->
+      <do_if value="not @player.entity.$vas_scu_unlock_salvagers">
+        <do_if value="$range != $maxrange">
+          <set_value name="$range" exact="$maxrange"/>
+          <do_if value="@$thisorder.exists">
+            <edit_order_param order="$thisorder" param="'range'" value="$range"/>
+          </do_if>
+        </do_if>
+      </do_if>
+    </do_if>
+  </replace>
+</diff>

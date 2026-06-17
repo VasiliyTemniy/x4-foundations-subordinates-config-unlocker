@@ -2,10 +2,10 @@
 <diff>
   <replace sel="/aiscript/init/do_if[@value='this.isplayerowned']/do_else">
     <do_else>
-      <!-- VAS-SCU: keep player-edited station subordinate mining ranges.
+      <!-- VAS-SCU: keep player-edited station subordinate mining/prospecting ranges.
            Mining basket controls are intentionally out of scope; vanilla already has
            its own mining-basket configuration path. -->
-      <do_if value="not @player.entity.$vas_scu_unlock_miners">
+      <do_if value="not (((this.assignedcontrolled.assignment == assignment.mining) and @player.entity.$vas_scu_unlock_miners) or ((this.assignedcontrolled.assignment == assignment.prospect) and @player.entity.$vas_scu_unlock_prospectors))">
         <do_if value="$maxbuy != $maxrange">
           <set_value name="$maxbuy" exact="$maxrange"/>
           <do_if value="@$thisorder.exists">

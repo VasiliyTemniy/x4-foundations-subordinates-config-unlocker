@@ -4,8 +4,8 @@ Small quality-of-life mod for X4: Foundations.
 
 It unlocks the gate-distance sliders for ships whose default behaviour is
 controlled by their commander. This is useful for station traders, build-storage
-traders, and miners when you want tighter control over how far they may travel
-without removing their assignment.
+traders, miners, prospectors, and salvagers when you want tighter control over how
+far they may travel without removing their assignment.
 
 ## Why
 
@@ -49,11 +49,14 @@ Then you can play! :)
 - Trader subordinate distances
 - Trade for Build Storage subordinate distances
 - Miner subordinate distances
+- Prospector subordinate distances
+- Salvager subordinate distances
 
 The affected settings are:
 
 - Min / max gate distance to buy or gather
 - Min / max gate distance to sell
+- Maximum range for salvage subordinates
 
 ## Options
 

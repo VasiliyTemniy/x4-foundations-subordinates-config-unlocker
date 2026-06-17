@@ -4,8 +4,8 @@
   name="[VAS] Subordinates Config Unlocker"
   description="Unlocks selected commander-controlled subordinate default-behaviour distance settings."
   author="VasiliyTemniy"
-  version="100"
-  date="2026-06-12"
+  version="110"
+  date="2026-06-18"
   save="0">
   <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD"/>
   <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs"/>
